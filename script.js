@@ -71,6 +71,7 @@ let playerName = localStorage.getItem("wordsearchPlayer") || "";
 let timerSeconds = 0;
 let timerInterval = null;
 let stageExpired = false;
+let gameStarted = false;
 const rankingKey = "wordsearchRanking";
 
 function applyStageTheme(stageNumber) {
@@ -242,6 +243,7 @@ function isAdjacent(cellA, cellB) {
 }
 
 function canSelect(cell) {
+  if (!gameStarted) return false;
   if (stageExpired) return false;
   if (cell.classList.contains("found")) return false;
   if (selectedCells.length === 0) return true;
@@ -403,6 +405,21 @@ function saveUsername() {
   localStorage.setItem("wordsearchPlayer", playerName);
   saveRankingEntry(playerName, getPlayerBest(playerName));
   updateGreeting();
+  if (!gameStarted) {
+    gameStarted = true;
+    stageMessage.textContent = `Bem-vindo, ${playerName}. Boa sorte!`;
+    loadStage(1);
+  }
+}
+
+function setGameEnabled(enabled) {
+  checkButton.disabled = !enabled;
+  resetButton.disabled = !enabled;
+  if (!enabled) {
+    nextPhaseButton.disabled = true;
+    nextPhaseButton.classList.add("secondary");
+    nextPhaseButton.textContent = "Próxima fase";
+  }
 }
 
 function loadStage(stageNumber) {
@@ -425,6 +442,7 @@ function loadStage(stageNumber) {
   updateRankingDisplay();
   applyStageTheme(stageNumber);
   startStageTimer();
+  setGameEnabled(true);
 }
 
 checkButton.addEventListener("click", checkSelection);
@@ -440,7 +458,10 @@ nextPhaseButton.addEventListener("click", () => {
 
 if (playerName) {
   usernameInput.value = playerName;
+  gameStarted = true;
+  loadStage(1);
+} else {
+  setGameEnabled(false);
 }
 
 updateRankingDisplay();
-loadStage(1);
