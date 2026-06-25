@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Caça-palavras</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <h1>Caça-palavras</h1>
+    <p>Encontre as palavras na grade. Clique nas letras na ordem correta e confirme sua seleção.</p>
+  </header>
+
+  <main class="content">
+    <section class="game-panel">
+      <div class="game-info">
+        <div class="panel card">
+          <h2 id="phaseTitle">Fase 1</h2>
+          <p id="stageMessage">Complete a fase encontrando todas as palavras.</p>
+          <div class="user-panel">
+            <label for="usernameInput">Jogador:</label>
+            <div class="user-controls">
+              <input id="usernameInput" type="text" placeholder="Digite seu nome" />
+              <button id="saveUserButton" class="secondary">Salvar</button>
+            </div>
+            <p id="userGreeting" class="user-greeting">Nome não definido.</p>
+          </div>
+          <div class="timer-panel">
+            <span class="timer-label">Tempo restante:</span>
+            <strong id="timerDisplay">01:30</strong>
+          </div>
+          <div class="stage-actions">
+            <button id="nextPhaseButton" class="secondary" disabled>Próxima fase</button>
+          </div>
+        </div>
+
+        <div class="panel card">
+          <h2>Palavras</h2>
+          <ul id="wordList" class="word-list"></ul>
+          <div class="score">
+            <span id="foundCount">0</span> / <span id="totalWords">0</span> encontradas
+          </div>
+        </div>
+
+        <div class="panel card">
+          <h2>Ranking</h2>
+          <ol id="rankingList" class="ranking-list"></ol>
+        </div>
+
+        <div class="panel card">
+          <h2>Palavra atual</h2>
+          <p id="selectionText">Clique nas letras para formar uma palavra.</p>
+          <div class="buttons">
+            <button id="checkButton">Checar palavra</button>
+            <button id="resetButton" class="secondary">Limpar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="board card">
+        <div id="grid" class="grid"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2026 Caça-palavras. Criado com GitHub Copilot.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
