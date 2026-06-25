@@ -60,6 +60,7 @@ const usernameInput = document.getElementById("usernameInput");
 const saveUserButton = document.getElementById("saveUserButton");
 const userGreeting = document.getElementById("userGreeting");
 const rankingListElm = document.getElementById("rankingList");
+const timeEndMessage = document.getElementById("timeEndMessage");
 
 let currentStage = 1;
 let currentWords = [];
@@ -69,6 +70,7 @@ let foundWords = new Set();
 let playerName = localStorage.getItem("wordsearchPlayer") || "";
 let timerSeconds = 0;
 let timerInterval = null;
+let stageExpired = false;
 const rankingKey = "wordsearchRanking";
 
 function applyStageTheme(stageNumber) {
@@ -240,6 +242,7 @@ function isAdjacent(cellA, cellB) {
 }
 
 function canSelect(cell) {
+  if (stageExpired) return false;
   if (cell.classList.contains("found")) return false;
   if (selectedCells.length === 0) return true;
   const last = selectedCells[selectedCells.length - 1];
@@ -345,6 +348,8 @@ function updateTimerDisplay() {
 
 function startStageTimer() {
   stopStageTimer();
+  stageExpired = false;
+  timeEndMessage.classList.add("hidden");
   timerSeconds = getStageTime(currentStage);
   updateTimerDisplay();
   timerInterval = setInterval(() => {
@@ -368,9 +373,12 @@ function stopStageTimer() {
 
 function handleTimeExpired() {
   stopStageTimer();
+  stageExpired = true;
   selectedCells.forEach((cell) => cell.classList.remove("selected"));
   selectedCells = [];
-  stageMessage.textContent = "Tempo esgotado! Clique em Reiniciar fase para tentar novamente.";
+  stageMessage.textContent = "Tempo esgotado! Você pode reiniciar a fase para tentar de novo.";
+  timeEndMessage.textContent = "O tempo acabou! Reinicie a fase para tentar novamente.";
+  timeEndMessage.classList.remove("hidden");
   nextPhaseButton.disabled = false;
   nextPhaseButton.classList.remove("secondary");
   nextPhaseButton.textContent = "Reiniciar fase";
